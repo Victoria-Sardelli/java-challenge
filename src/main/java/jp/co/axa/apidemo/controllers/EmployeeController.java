@@ -32,7 +32,7 @@ public class EmployeeController {
     @GetMapping("/employees/{employeeId}")
     public ResponseEntity<Employee> getEmployee(@PathVariable(name="employeeId")Long employeeId) {
         Employee emp = employeeService.getEmployee(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + employeeId));
+                .orElseThrow(() -> new EntityNotFoundException("Employee Not Found - ID: " + employeeId));
         return ResponseEntity.ok(emp);
     }
 
@@ -45,7 +45,7 @@ public class EmployeeController {
     @DeleteMapping("/employees/{employeeId}")
     public void deleteEmployee(@PathVariable(name="employeeId")Long employeeId){
         employeeService.deleteEmployee(employeeId);
-        logger.info("Employee Deleted Successfully");
+        logger.info("Employee Deleted Successfully - ID: " + employeeId);
     }
 
     @PutMapping("/employees/{employeeId}")
@@ -53,8 +53,9 @@ public class EmployeeController {
                                @PathVariable(name="employeeId")Long employeeId){
         // check if employee exists prior to attempting update
         employeeService.getEmployee(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + employeeId));
+                .orElseThrow(() -> new EntityNotFoundException("Employee Not Found - ID: " + employeeId));
         employeeService.updateEmployee(employee, employeeId);
+        logger.info("Employee Updated Successfully - ID: " + employeeId);
     }
 
 }
