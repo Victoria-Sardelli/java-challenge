@@ -24,38 +24,44 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public List<Employee> getEmployees() {
+    public ResponseEntity<List<Employee>> getEmployees() {
         List<Employee> employees = employeeService.retrieveEmployees();
-        return employees;
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping("/employees/{employeeId}")
     public ResponseEntity<Employee> getEmployee(@PathVariable(name="employeeId")Long employeeId) {
         Employee emp = employeeService.getEmployee(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee Not Found - ID: " + employeeId));
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found - ID: " + employeeId));
         return ResponseEntity.ok(emp);
     }
 
     @PostMapping("/employees")
-    public void saveEmployee(Employee employee){
+    public ResponseEntity<String> saveEmployee(Employee employee){
         employeeService.saveEmployee(employee);
-        logger.info("Employee Saved Successfully");
+        String successMsg = "Employee saved successfully";
+        logger.info(successMsg);
+        return ResponseEntity.ok(successMsg);
     }
 
     @DeleteMapping("/employees/{employeeId}")
-    public void deleteEmployee(@PathVariable(name="employeeId")Long employeeId){
+    public ResponseEntity<String> deleteEmployee(@PathVariable(name="employeeId")Long employeeId){
         employeeService.deleteEmployee(employeeId);
-        logger.info("Employee Deleted Successfully - ID: " + employeeId);
+        String successMsg = "Employee deleted successfully - ID: " + employeeId;
+        logger.info(successMsg);
+        return ResponseEntity.ok(successMsg);
     }
 
     @PutMapping("/employees/{employeeId}")
-    public void updateEmployee(@RequestBody Employee employee,
+    public ResponseEntity<String> updateEmployee(@RequestBody Employee employee,
                                @PathVariable(name="employeeId")Long employeeId){
         // check if employee exists prior to attempting update
         employeeService.getEmployee(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee Not Found - ID: " + employeeId));
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found - ID: " + employeeId));
         employeeService.updateEmployee(employee, employeeId);
-        logger.info("Employee Updated Successfully - ID: " + employeeId);
+        String successMsg = "Employee updated successfully - ID: " + employeeId;
+        logger.info(successMsg);
+        return ResponseEntity.ok(successMsg);
     }
 
 }
