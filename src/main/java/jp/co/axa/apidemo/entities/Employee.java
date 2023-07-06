@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="EMPLOYEE")
@@ -23,6 +24,7 @@ public class Employee {
     @Getter
     @Setter
     @Column(name="EMPLOYEE_NAME")
+    @NotNull
     private String name;
 
     @Getter
