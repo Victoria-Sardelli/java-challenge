@@ -15,8 +15,6 @@ public final class TestUtil {
         Employee employee = new Employee();
         employee.setId(1L);
         employee.setName("Name");
-        employee.setSalary(1);
-        employee.setDepartment("Department");
         return employee;
     }
 
