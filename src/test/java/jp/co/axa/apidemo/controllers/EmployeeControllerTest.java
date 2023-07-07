@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,7 +62,7 @@ public class EmployeeControllerTest {
     @Test
     public void shouldGetEmployee() throws Exception {
         Employee employee = getTestEmployee();
-        doReturn(Optional.of(employee)).when(employeeService).getEmployee(employee.getId());
+        doReturn(employee).when(employeeService).getEmployee(employee.getId());
         mockMvc.perform(get(baseApiUrl + "/employees/" + employee.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name", is(employee.getName())));
@@ -76,7 +75,7 @@ public class EmployeeControllerTest {
     @Test
     public void shouldReturnErrorMessageForGetEmployee() throws Exception {
         long id = 1L;
-        doReturn(Optional.empty()).when(employeeService).getEmployee(id);
+        doReturn(null).when(employeeService).getEmployee(id);
 
         mockMvc.perform(get(baseApiUrl + "/employees/" + id))
                 .andExpect(status().isNotFound())
@@ -90,7 +89,7 @@ public class EmployeeControllerTest {
     @Test
     public void shouldSaveEmployee() throws Exception {
         Employee employee = getTestEmployee();
-        doNothing().when(employeeService).saveEmployee(employee);
+        doReturn(employee).when(employeeService).saveEmployee(employee);
         mockMvc.perform(post(baseApiUrl + "/employees")
                         .contentType(APPLICATION_JSON)
                         .content(asJson(employee)))
@@ -118,8 +117,8 @@ public class EmployeeControllerTest {
     @Test
     public void shouldUpdateEmployee() throws Exception {
         Employee employee = getTestEmployee();
-        doReturn(Optional.of(employee)).when(employeeService).getEmployee(employee.getId());
-        doNothing().when(employeeService).updateEmployee(employee, employee.getId());
+        doReturn(employee).when(employeeService).getEmployee(employee.getId());
+        doReturn(employee).when(employeeService).updateEmployee(employee, employee.getId());
         mockMvc.perform(
                 put(baseApiUrl + "/employees/" + employee.getId()).content(asJson(employee)).contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -134,7 +133,7 @@ public class EmployeeControllerTest {
     @Test
     public void shouldReturnErrorMessageForUpdateEmployee() throws Exception {
         long id = 1L;
-        doReturn(Optional.empty()).when(employeeService).getEmployee(id);
+        doReturn(null).when(employeeService).getEmployee(id);
 
         mockMvc.perform(get(baseApiUrl + "/employees/" + id))
                 .andExpect(status().isNotFound())

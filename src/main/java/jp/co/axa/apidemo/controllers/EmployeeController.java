@@ -41,8 +41,8 @@ public class EmployeeController {
      */
     @GetMapping("/employees/{employeeId}")
     public ResponseEntity<Employee> getEmployee(@PathVariable(name="employeeId")Long employeeId) {
-        Employee emp = employeeService.getEmployee(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found - ID: " + employeeId));
+        Employee emp = employeeService.getEmployee(employeeId);
+        if (emp == null) throw new EntityNotFoundException("Employee not found - ID: " + employeeId);
         return ResponseEntity.ok(emp);
     }
 
@@ -83,8 +83,9 @@ public class EmployeeController {
     public ResponseEntity<ResponseMessage> updateEmployee(@RequestBody Employee employee,
                                @PathVariable(name="employeeId")Long employeeId){
         // check if employee exists prior to attempting update
-        employeeService.getEmployee(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found - ID: " + employeeId));
+        if (employeeService.getEmployee(employeeId) == null)
+            throw new EntityNotFoundException("Employee not found - ID: " + employeeId);
+
         employeeService.updateEmployee(employee, employeeId);
         String successMsg = "Employee updated successfully - ID: " + employeeId;
         logger.info(successMsg);

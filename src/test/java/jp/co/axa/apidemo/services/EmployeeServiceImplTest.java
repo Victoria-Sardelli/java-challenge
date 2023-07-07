@@ -59,27 +59,27 @@ public class EmployeeServiceImplTest {
     }
 
     /**
-     * Tests that getEmployee() returns an Optional containing an employee retrieved from repository
+     * Tests that getEmployee() returns employee retrieved from repository
      */
     @Test
     public void shouldGetEmployee() {
         Employee employee = getTestEmployee();
         doReturn(Optional.of(employee)).when(employeeRepository).findById(employee.getId());
 
-        Optional<Employee> optEmp = employeeService.getEmployee(employee.getId());
-        assertThat(optEmp).contains(employee);
+        Employee optEmp = employeeService.getEmployee(employee.getId());
+        assertThat(optEmp).isEqualTo(employee);
     }
 
     /**
-     * Tests that getEmployee() returns an empty Optional when repository does not contain requested employee
+     * Tests that getEmployee() returns null when repository does not contain requested employee
      */
     @Test
     public void shouldReturnEmptyOptionalIfNoEmployee() {
         Employee employee = getTestEmployee();
         doReturn(Optional.empty()).when(employeeRepository).findById(employee.getId());
 
-        Optional<Employee> optEmp = employeeService.getEmployee(employee.getId());
-        assertThat(optEmp).isEmpty();
+        Employee optEmp = employeeService.getEmployee(employee.getId());
+        assertThat(optEmp).isNull();
     }
 
     /**
@@ -90,8 +90,9 @@ public class EmployeeServiceImplTest {
         Employee employee = getTestEmployee();
         doReturn(employee).when(employeeRepository).save(employee);
 
-        employeeService.saveEmployee(employee);
+        Employee returnedEmployee = employeeService.saveEmployee(employee);
         verify(employeeRepository, times(1)).save(employee);
+        assertThat(returnedEmployee).isEqualTo(employee);
     }
 
     /**
@@ -111,14 +112,24 @@ public class EmployeeServiceImplTest {
      */
     @Test
     public void shouldUpdateEmployee() {
+        // test employee data to save with test id
         Employee employee = getTestEmployee();
         Long testId = 100L;
 
-        employeeService.updateEmployee(employee, testId);
+        // test employee that represents expected state of entry after it is updated (should have given test id)
+        Employee employeeWithTestId = getTestEmployee();
+        employeeWithTestId.setId(testId);
+        doReturn(employeeWithTestId).when(employeeRepository).save(employee);
 
-        // confirm that the service has saved employee data using the ID given from user
+        Employee returnedEmployee = employeeService.updateEmployee(employee, testId);
+
+        // confirm that the service provided repository with correct id and employee data when attempting to save
         verify(employeeRepository, times(1)).save(captor.capture());
         assertThat(captor.getValue().getId()).isEqualTo(testId);
         assertThat(captor.getValue().getName()).isEqualTo(employee.getName());
+
+        // confirm that the returned employee object contains the same data as what was provided to repository
+        assertThat(returnedEmployee.getId()).isEqualTo(testId);
+        assertThat(returnedEmployee.getName()).isEqualTo(employee.getName());
     }
 }
