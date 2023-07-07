@@ -37,6 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     public void updateEmployee(Employee employee, Long employeeId) {
+        // set ID so that we update existing entry rather than creating a new one
         employee.setId(employeeId);
         employeeRepository.save(employee);
     }
