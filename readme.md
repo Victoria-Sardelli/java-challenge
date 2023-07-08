@@ -1,11 +1,11 @@
 Thank you for checking out my project!
 
-#### My experience in Java
+### My experience in Java
 
 I have 5 years experience in Java and I started learning Spring Boot this year.
 
 
-#### Summary of my changes
+### Summary of my changes
 - Updated lombok version to fix maven package issue
 - Set constraint on the Employee name field so that it cannot be null.
   My reasoning was that everyone should have a name, even if they may not yet have a department or salary
@@ -24,7 +24,7 @@ I have 5 years experience in Java and I started learning Spring Boot this year.
 - Added caching using Ehcache
 
 
-#### What I would like to do with more time
+### What I would like to do with more time
 - Add automated tests to verify caching functionality. For now, I tested the caching functionality manually
   by setting the logging level to TRACE and performing various operations through the Swagger UI and H2 UI
 - Research and implement protection of REST endpoints. Spring Security seems to be a promising option to explore,
@@ -32,7 +32,7 @@ I have 5 years experience in Java and I started learning Spring Boot this year.
 - Since the user is not supposed to set the employee ID themselves when sending a POST or PUT operation through the Swagger UI
   (even if they do, it gets ignored!), I would like to prevent confusion by perhaps hiding that field for those operations
 - Continue adding more test cases
-- 
+
 
 ### How to use this spring-boot project
 
