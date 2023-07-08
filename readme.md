@@ -43,10 +43,35 @@ Application (with the embedded H2 database) is ready to be used ! You can access
 - Is the application running as expected
 - No performance issues
 
-#### Your experience in Java
+#### My experience in Java
 
-Please let us know more about your Java experience in a few sentences. For example:
+I have 5 years experience in Java and I started learning Spring Boot this year.
 
-- I have 3 years experience in Java and I started to use Spring Boot from last year
-- I'm a beginner and just recently learned Spring Boot
-- I know Spring Boot very well and have been using it for many years
+#### Summary of my changes
+- Updated lombok version to fix maven package issue
+- Set constraint on the Employee name field so that it cannot be null
+  My reasoning was that everyone should have a name, even if they may not yet have a department or salary
+- Fixed updateEmployee() flow so that it sets the correct ID on the employee before saving it to the database
+  Otherwise, it would create a new user instead of overriding the old one
+- Updated getEmployee() in EmployeeServiceImpl so that it returns null if the employee doesn't exist
+  This way, the controller can handle empty values by throwing custom exception
+- Added RestExceptionHandler controller advice to return meaningful error messages with appropriate status codes for exceptions
+- Replaced print statements with logs and added additional log statements
+  This allows us to categorize and filter logs based on severity, and eventually send logs to external systems if desired
+- Changed return value of api calls to be ResponseEntity objects, so that it is easier to set status codes and return messages
+- Created ResponseMessage class to hold the String messages we want to return in api response
+- Added tests for controller, repository, and service, and added smoke test for app
+- Created separate config file to enable Swagger
+  This helped resolve issues that arose when trying to test different slices of the application without loading the whole Spring context
+- Added caching using Ehcache
+
+#### What I would like to do with more time
+- Add automated tests to verify caching functionality. For now, I tested the caching functionality manually
+  by setting the logging level to TRACE and performing various operations through the Swagger UI and H2 UI
+- Research and implement protection of REST endpoints. Spring Security seems to be a promising option to explore,
+  as it allows us to quickly configure authentication and authorization while providing useful built-in functionality
+- Since the user is not supposed to set the employee ID themselves when sending a POST or PUT operation through the Swagger UI
+  (even if they do, it gets ignored!), I would like to prevent confusion by perhaps hiding that field for those operations
+- Continue adding more test cases
+
+Thank you for checking out my project!
