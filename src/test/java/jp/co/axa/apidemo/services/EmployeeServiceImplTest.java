@@ -66,20 +66,20 @@ public class EmployeeServiceImplTest {
         Employee employee = getTestEmployee();
         doReturn(Optional.of(employee)).when(employeeRepository).findById(employee.getId());
 
-        Employee optEmp = employeeService.getEmployee(employee.getId());
-        assertThat(optEmp).isEqualTo(employee);
+        Employee emp = employeeService.getEmployee(employee.getId());
+        assertThat(emp).isEqualTo(employee);
     }
 
     /**
      * Tests that getEmployee() returns null when repository does not contain requested employee
      */
     @Test
-    public void shouldReturnEmptyOptionalIfNoEmployee() {
+    public void shouldReturnNullIfNoEmployee() {
         Employee employee = getTestEmployee();
         doReturn(Optional.empty()).when(employeeRepository).findById(employee.getId());
 
-        Employee optEmp = employeeService.getEmployee(employee.getId());
-        assertThat(optEmp).isNull();
+        Employee emp = employeeService.getEmployee(employee.getId());
+        assertThat(emp).isNull();
     }
 
     /**
